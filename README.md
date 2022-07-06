@@ -10,6 +10,7 @@ This repository wraps the [actions/checkout](https://github.com/actions/checkout
 - uses: john-jam/checkout-action@v1
   with:
     # The private actions repository to checkout in the .github/actions folder
+    # Format: ${owner}/${repo}@${ref}
     actions-repo: ""
 
     # The ssh deploy key used to clone the actions private repository

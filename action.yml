@@ -24,10 +24,21 @@ runs:
     - name: Checkout the current repository
       uses: actions/checkout@v3
 
+    - name: Set variables
+      if: inputs.actions-repo != '' && inputs.actions-ssh-key != ''
+      id: actions-set-vars
+      shell: bash
+      run: |
+        repo_basepath=$(echo "${{ inputs.actions-repo }}" | cut -d '@' -f1)
+        repo_ref=$(echo "${{ inputs.actions-repo }}" | cut -d '@' -f2)
+        echo "::set-output name=repo-basepath::$(echo ${repo_basepath})"
+        echo "::set-output name=repo-ref::$(echo ${repo_ref})"
+
     - name: Checkout the actions private repository
       if: inputs.actions-repo != '' && inputs.actions-ssh-key != ''
       uses: actions/checkout@v3
       with:
-        repository: ${{ inputs.actions-repo }}
-        path: .github/actions/${{ inputs.actions-repo }}
+        repository: ${{ steps.actions-set-vars.outputs.repo-basepath }}
+        ref: ${{ steps.actions-set-vars.outputs.repo-ref }}
+        path: .github/actions/${{ steps.actions-set-vars.outputs.repo-basepath }}
         ssh-key: ${{ inputs.actions-ssh-key }}
