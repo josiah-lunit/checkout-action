@@ -31,8 +31,8 @@ runs:
       run: |
         repo_basepath=$(echo "${{ inputs.actions-repo }}" | cut -d '@' -f1)
         repo_ref=$(echo "${{ inputs.actions-repo }}" | cut -d '@' -f2)
-        echo "::set-output name=repo-basepath::$(echo ${repo_basepath})"
-        echo "::set-output name=repo-ref::$(echo ${repo_ref})"
+        echo "repo-basepath=$(echo ${repo_basepath})" >> $GITHUB_OUTPUT
+        echo "repo-ref=$(echo ${repo_ref})" >> $GITHUB_OUTPUT
 
     - name: Checkout the actions private repository
       if: inputs.actions-repo != '' && inputs.actions-ssh-key != ''
